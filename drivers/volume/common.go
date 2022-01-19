@@ -201,6 +201,14 @@ func (d *DefaultDriver) ValidateUpdateVolume(vol *Volume, params map[string]stri
 	}
 }
 
+// SetIoThrottle Sets the max bandwidth for IOPS
+func (d *DefaultDriver) SetIoThrottle(vol *Volume) error {
+	return &errors.ErrNotSupported{
+		Type:      "Function",
+		Operation: "SetIoThrottle()",
+	}
+}
+
 // ValidateDeleteVolume validates whether a volume is cleanly removed from the volume driver
 func (d *DefaultDriver) ValidateDeleteVolume(vol *Volume) error {
 	return &errors.ErrNotSupported{

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fio-throttle-io
+spec:
+  schedulerName: stork
+  containers:
+    - name: fio
+      image: portworx/fio_drv
+      command: ["fio"]
+      resources:
+        limits:
+          cpu: "2"
+          memory: 4Gi
+        requests:
+          cpu: "1"
+          memory: 4Gi
+      args: ["/configs/fio.job", "--status-interval=1", "--eta=never", "--output-format=json"]
+      volumeMounts:
+        - name: fio-config-vol
+          mountPath: /configs
+        - name: fio-data
+          mountPath: /scratch
+  volumes:
+    - name: fio-config-vol
+      configMap:
+        name: fio-job-config
+    - name: fio-data
+      persistentVolumeClaim:
+        claimName: fio-throttle-io-pvc
